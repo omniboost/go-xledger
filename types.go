@@ -132,7 +132,7 @@ type Customer struct {
 	//GlObject1              interface{} `graphql:"glObject1"`
 	//GlObject4              interface{} `graphql:"glObject4"`
 	//GlObject5              interface{} `graphql:"glObject5"`
-	Address CustomerAddress `graphql:"address"`
+	Address Address `graphql:"address"`
 	//Company                interface{} `graphql:"company"`
 	//Owner                  interface{} `graphql:"owner"`
 	//Collection             interface{} `graphql:"collection"`
@@ -144,7 +144,7 @@ type Customer struct {
 	//BankRecord             interface{} `graphql:"bankRecord"`
 }
 
-type CustomerAddress struct {
+type Address struct {
 	Country struct {
 		Code string `graphql:"code"`
 	} `graphql:"country"`
@@ -169,4 +169,23 @@ type TaxCode struct {
 	OwnerDbId int    `graphql:"ownerDbId"`
 	Text      string `graphql:"text"`
 	Code      string `graphql:"code"`
+}
+
+type Company struct {
+	DBId          int      `graphql:"dbId"`
+	Description   string   `graphql:"description"`
+	Code          string   `graphql:"code"`
+	Country       string   `graphql:"country"`
+	Address       Address  `graphql:"address"`
+	TaxNumber     string   `graphql:"taxNumber"`
+	CompanyName   string   `graphql:"companyName"`
+	CompanyNumber string   `graphql:"companyNumber"`
+	Email         string   `graphql:"email"`
+	ModifiedAt    DateTime `graphql:"modifiedAt"`
+	Name          string   `graphql:"name"`
+	Notes         string   `graphql:"notes"`
+	Phone         string   `graphql:"phone"`
+	Phone2        string   `graphql:"phone2"`
+	Phone3        string   `graphql:"phone3"`
+	TaxNo         string   `graphql:"taxNo"`
 }

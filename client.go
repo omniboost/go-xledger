@@ -50,7 +50,7 @@ func NewClient(httpClient *http.Client) *Client {
 }
 
 func (c Client) GraphQLClient() *graphql.Client {
-	return graphql.NewClient(c.baseURL.String(), c.http).WithRequestModifier(func(r *http.Request) {
+	return graphql.NewClient(c.baseURL.String(), c.http).WithDebug(c.debug).WithRequestModifier(func(r *http.Request) {
 		r.Header.Add("Authorization", fmt.Sprintf("token %s", c.Token()))
 		r.Header.Set("User-Agent", c.userAgent)
 	})
