@@ -2,6 +2,7 @@ package xledger
 
 import (
 	"bytes"
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -13,6 +14,7 @@ import (
 	"path"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/hashicorp/go-multierror"
 	"github.com/hasura/go-graphql-client"
@@ -49,8 +51,61 @@ func NewClient(httpClient *http.Client) *Client {
 	return client
 }
 
+type RoundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (f RoundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return f(r)
+}
+
 func (c Client) GraphQLClient() *graphql.Client {
-	return graphql.NewClient(c.baseURL.String(), c.http).WithDebug(c.debug).WithRequestModifier(func(r *http.Request) {
+	transport := http.DefaultTransport
+	timeout := time.Duration(0)
+	if c.http != nil {
+		timeout = c.http.Timeout
+		if c.http.Transport != nil {
+			transport = c.http.Transport
+		}
+	}
+	httpClient := &http.Client{Transport: transport, Timeout: timeout}
+
+	if c.debug {
+		httpClient.Transport = struct{ http.RoundTripper }{
+			RoundTripper: RoundTripperFunc(func(req *http.Request) (*http.Response, error) {
+				dump, _ := httputil.DumpRequestOut(req, true)
+				log.Println(string(dump))
+				resp, err := transport.RoundTrip(req)
+				if err != nil {
+					return resp, err
+				}
+
+				var raw bytes.Buffer
+				if resp.Header.Get("Content-Encoding") == "gzip" {
+					defer resp.Body.Close()
+
+					// Read entire original body into memory
+					if _, err := io.Copy(&raw, resp.Body); err != nil {
+						panic(err)
+					}
+
+					gz, err := gzip.NewReader(bytes.NewReader(raw.Bytes()))
+					if err != nil {
+						return resp, err
+					}
+					defer gz.Close()
+					resp.Body = io.NopCloser(gz)
+				}
+				dump, _ = httputil.DumpResponse(resp, true)
+				log.Println(string(dump))
+				if raw.Len() > 0 {
+					// Restore the original body
+					resp.Body = io.NopCloser(bytes.NewReader(raw.Bytes()))
+				}
+				return resp, err
+			}),
+		}
+	}
+
+	return graphql.NewClient(c.baseURL.String(), httpClient).WithDebug(c.debug).WithRequestModifier(func(r *http.Request) {
 		r.Header.Add("Authorization", fmt.Sprintf("token %s", c.Token()))
 		r.Header.Set("User-Agent", c.userAgent)
 	})
