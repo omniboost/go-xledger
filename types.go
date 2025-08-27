@@ -1,12 +1,18 @@
 package xledger
 
-type QLQuery[T any] struct {
+type QLQueryPaginated[T any] struct {
 	PageInfo struct {
 		HasNextPage bool
 	}
 	Edges []struct {
 		Cursor string
 		Node   T
+	}
+}
+
+type QLQuery[T any] struct {
+	Edges []struct {
+		Node T
 	}
 }
 
@@ -145,12 +151,16 @@ type Customer struct {
 }
 
 type Address struct {
-	Country struct {
-		Code string `graphql:"code"`
-	} `graphql:"country"`
-	StreetAddress string `graphql:"streetAddress"`
-	ZipCode       string `graphql:"zipCode"`
-	Place         string `graphql:"place"`
+	Country       Country `graphql:"country"`
+	StreetAddress string  `graphql:"streetAddress"`
+	ZipCode       string  `graphql:"zipCode"`
+	Place         string  `graphql:"place"`
+}
+
+type Country struct {
+	DBId        int    `graphql:"dbId"`
+	Code        string `graphql:"code"`
+	Description string `graphql:"description"`
 }
 
 type Currency struct {
@@ -188,4 +198,30 @@ type Company struct {
 	Phone2        string   `graphql:"phone2"`
 	Phone3        string   `graphql:"phone3"`
 	TaxNo         string   `graphql:"taxNo"`
+}
+
+type CompaniesInput struct {
+	Description   string                `json:"description,omitempty"`
+	Code          string                `json:"code,omitempty"`
+	Country       CompaniesInputCountry `json:"country,omitempty"`
+	Address       CompaniesInputAddress `json:"address"`
+	TaxNumber     string                `json:"taxNumber,omitempty"`
+	CompanyNumber string                `json:"companyNumber,omitempty"`
+	Email         string                `json:"email,omitempty"`
+	Phone         string                `json:"phone,omitempty"`
+	Phone2        string                `json:"phone2,omitempty"`
+}
+
+type CompaniesInputCountry struct {
+	Code string `json:"code"`
+}
+type CompaniesInputAddress struct {
+	Country       string `json:"country"`
+	StreetAddress string `json:"streetAddress,omitempty"`
+	ZipCode       string `json:"zipCode,omitempty"`
+	Place         string `json:"place,omitempty"`
+}
+
+func (CompaniesInput) GetGraphQLType() string {
+	return "AddCompaniesInputNode"
 }

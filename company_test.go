@@ -17,7 +17,7 @@ func TestCompanyGetAll(t *testing.T) {
 	}
 	for {
 		q := struct {
-			Data xledger.QLQuery[xledger.Company] `graphql:"companies(objectStatus: OPEN, first: 5000, after: $after)"`
+			Data xledger.QLQueryPaginated[xledger.Company] `graphql:"companies(objectStatus: OPEN, first: 5000, after: $after)"`
 		}{}
 		err := client.GraphQLClient().Query(context.Background(), &q, variables)
 		if err != nil {
@@ -44,7 +44,7 @@ func TestCompanyGet(t *testing.T) {
 		"taxNumber": "NO997331508",
 	}
 	q := struct {
-		Data xledger.QLQuery[xledger.Company] `graphql:"companies(first: 1, filter: {taxNumber: $taxNumber})"`
+		Data xledger.QLQueryPaginated[xledger.Company] `graphql:"companies(first: 1, filter: {taxNumber: $taxNumber})"`
 	}{}
 	err := client.GraphQLClient().Query(context.Background(), &q, variables)
 	if err != nil {
@@ -54,6 +54,37 @@ func TestCompanyGet(t *testing.T) {
 		t.Fatal("no company found")
 	}
 	t.Log(q.Data.Edges[0].Node)
+
+	d, _ := json.Marshal(q.Data.Edges[0].Node)
+	t.Log(string(d))
+}
+
+func TestCompanyAdd(t *testing.T) {
+	q := struct {
+		Data xledger.QLQuery[xledger.Company] `graphql:"addCompanies(inputs: {node :$node})"`
+	}{}
+
+	variables := map[string]interface{}{
+		"node": xledger.CompaniesInput{
+			Description: "Omniboost TEST",
+			Code:        "OMNI1234",
+			Country: xledger.CompaniesInputCountry{
+				Code: "NL",
+			},
+			Address: xledger.CompaniesInputAddress{
+				Country:       "Netherlands",
+				StreetAddress: "Straat 1",
+				ZipCode:       "1234 AB",
+				Place:         "Amsterdam",
+			},
+			TaxNumber: "NO999999999",
+			Phone:     "12345678",
+		},
+	}
+	err := client.GraphQLClient().Mutate(context.Background(), &q, variables)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	d, _ := json.Marshal(q.Data.Edges[0].Node)
 	t.Log(string(d))

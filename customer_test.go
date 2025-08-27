@@ -17,7 +17,7 @@ func TestCustomerGetAll(t *testing.T) {
 	}
 	for {
 		q := struct {
-			Data xledger.QLQuery[xledger.Customer] `graphql:"customers(ownerSet: CURRENT, objectStatus: OPEN, first: 500, after: $after)"`
+			Data xledger.QLQueryPaginated[xledger.Customer] `graphql:"customers(ownerSet: CURRENT, objectStatus: OPEN, first: 500, after: $after)"`
 		}{}
 		err := client.GraphQLClient().Query(context.Background(), &q, variables)
 		if err != nil {
@@ -42,7 +42,7 @@ func TestCustomerGet(t *testing.T) {
 		"code": "10000133",
 	}
 	q := struct {
-		Data xledger.QLQuery[xledger.Customer] `graphql:"customers(first: 1, filter: {code: $code})"`
+		Data xledger.QLQueryPaginated[xledger.Customer] `graphql:"customers(first: 1, filter: {code: $code})"`
 	}{}
 	err := client.GraphQLClient().Query(context.Background(), &q, variables)
 	if err != nil {

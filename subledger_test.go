@@ -17,7 +17,7 @@ func TestSubLedgerGetAll(t *testing.T) {
 	}
 	for {
 		q := struct {
-			Data xledger.QLQuery[xledger.SubLedger] `graphql:"subledgers(first: 500, after: $after)"`
+			Data xledger.QLQueryPaginated[xledger.SubLedger] `graphql:"subledgers(first: 500, after: $after)"`
 		}{}
 		err := client.GraphQLClient().Query(context.Background(), &q, variables)
 		if err != nil {

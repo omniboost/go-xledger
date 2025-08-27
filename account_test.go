@@ -49,7 +49,7 @@ func TestAccountGetAll(t *testing.T) {
 	}
 	for {
 		q := struct {
-			Data xledger.QLQuery[xledger.Account] `graphql:"accounts(ownerSet: LOWER, first: 500, after: $after)"`
+			Data xledger.QLQueryPaginated[xledger.Account] `graphql:"accounts(ownerSet: LOWER, first: 500, after: $after)"`
 		}{}
 		err := client.GraphQLClient().Query(context.Background(), &q, variables)
 		if err != nil {
