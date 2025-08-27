@@ -200,6 +200,18 @@ type Company struct {
 	TaxNo         string   `graphql:"taxNo"`
 }
 
+type ObjectKind struct {
+	DBId string `graphql:"dbId"`
+	Name string `graphql:"name"`
+}
+
+type ObjectValue struct {
+	DBId        int        `graphql:"dbId"`
+	ObjectKind  ObjectKind `graphql:"objectKind"`
+	Code        string     `graphql:"code"`
+	Description string     `graphql:"description"`
+}
+
 type CompaniesInput struct {
 	Description   string                `json:"description,omitempty"`
 	Code          string                `json:"code,omitempty"`
