@@ -237,3 +237,110 @@ type CompaniesInputAddress struct {
 func (CompaniesInput) GetGraphQLType() string {
 	return "AddCompaniesInputNode"
 }
+
+type GLImportItem struct {
+	DBId              string            `graphql:"dbId"`
+	PostedDate        Date              `graphql:"postedDate"`
+	InvoiceNumber     *string           `graphql:"invoiceNumber"`
+	Text              *string           `graphql:"text"`
+	Amount            Number            `graphql:"amount"`
+	InvoiceAmount     Number            `graphql:"invoiceAmount"`
+	CreatedAt         DateTime          `graphql:"createdAt"`
+	ModifiedAt        DateTime          `graphql:"modifiedAt"`
+	InvoiceDate       *Date             `graphql:"invoiceDate"`
+	DueDate           *Date             `graphql:"dueDate"`
+	YourReference     *string           `graphql:"yourReference"`
+	PaymentReference  *string           `graphql:"paymentReference"`
+	TaxAmount         Number            `graphql:"taxAmount"`
+	TrRegNumber       int               `graphql:"trRegNumber"`
+	JobLevel          JobLevel          `graphql:"jobLevel"`
+	TransactionSource TransactionSource `graphql:"transactionSource"`
+	Account           Account           `graphql:"account"`
+	Currency          *Currency         `graphql:"currency"`
+	TaxRule           *TaxRule          `graphql:"taxRule"`
+	//OwnerDbId            int     `graphql:"ownerDbId"`
+	//ExchangeRate         float64 `graphql:"exchangeRate"`
+	//ExtIdentifier        string  `graphql:"extIdentifier"`
+	//PositionNumber       int     `graphql:"positionNumber"`
+	//FiscalYear           int     `graphql:"fiscalYear"`
+	//Amount3              Number  `graphql:"amount3"`
+	//Amount4              Number  `graphql:"amount4"`
+	//Amount5              Number  `graphql:"amount5"`
+	//Archive              bool    `graphql:"archive"`
+	//Quantity             float64 `graphql:"quantity"`
+	//TrItemNumber         int     `graphql:"trItemNumber"`
+	//ExtOrderNumber       string  `graphql:"extOrderNumber"`
+	//PayDocText           *string `graphql:"payDocText"`
+	//PeriodStart          *Date   `graphql:"periodStart"`
+	//NumberPeriod         int     `graphql:"numberPeriod"`
+	//RegAmount            Number  `graphql:"regAmount"`
+	//TaxAmount2           Number  `graphql:"taxAmount2"`
+	//DiscountDate         *Date   `graphql:"discountDate"`
+	//Discount             Number  `graphql:"discount"`
+	//DiscountAmount       Number  `graphql:"discountAmount"`
+	//Quantity2            Number  `graphql:"quantity2"`
+	//Quantity3            Number  `graphql:"quantity3"`
+	//Workflow             string  `graphql:"workflow"`
+	//FiscalPeriod         int     `graphql:"fiscalPeriod"`
+	//ImportDefinitionDbId int     `graphql:"importDefinitionDbId"`
+}
+
+type TaxRule struct {
+	Code string `graphql:"code"`
+}
+
+type JobLevel struct {
+	DBSubId int `json:"dbSubId"`
+}
+
+type TransactionSource struct {
+	Code string `graphql:"code"`
+}
+
+type GLImportItemInput struct {
+	Account           GLImportItemInputAccount           `json:"account"`
+	Company           *GLImportItemCompany               `json:"company,omitempty"`
+	Amount            string                             `json:"amount"`
+	JobLevel          GLImportItemInputJobLevel          `json:"jobLevel"`
+	Currency          GLImportItemInputCurrency          `json:"currency"`
+	TaxRule           GLImportItemInputTaxRule           `json:"taxRule"`
+	TransactionSource GLImportItemInputTransactionSource `json:"transactionSource"`
+	TaxAmount         string                             `json:"taxAmount,omitempty"`
+	TrRegNumber       int                                `json:"trRegNumber"`
+	PostedDate        Date                               `json:"postedDate"`
+	Quantity          int                                `json:"quantity"`
+	Text              string                             `json:"text,omitempty"`
+	YourReference     string                             `json:"yourReference,omitempty"`
+	DueDate           *Date                              `json:"dueDate,omitempty"`
+	InvoiceDate       *Date                              `json:"invoiceDate,omitempty"`
+	InvoiceNumber     string                             `json:"invoiceNumber,omitempty"`
+	InvoiceAmount     string                             `json:"invoiceAmount,omitempty"`
+}
+
+type GLImportItemCompany struct {
+	Code string `json:"code"`
+}
+
+type GLImportItemInputAccount struct {
+	Code string `json:"code"`
+}
+
+type GLImportItemInputJobLevel struct {
+	DBSubId int `json:"dbSubId"`
+}
+
+type GLImportItemInputCurrency struct {
+	Code string `json:"code"`
+}
+
+type GLImportItemInputTaxRule struct {
+	Code string `json:"code"`
+}
+
+type GLImportItemInputTransactionSource struct {
+	Code string `json:"code"`
+}
+
+func (GLImportItemInput) GetGraphQLType() string {
+	return "AddGLImportItemsInputNode"
+}
