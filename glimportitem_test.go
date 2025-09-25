@@ -24,3 +24,22 @@ func TestGLImportItemsGet(t *testing.T) {
 	d, _ := json.Marshal(q.Data.Edges[0].Node)
 	t.Log(string(d))
 }
+
+func TestGLImportItemsAdd(t *testing.T) {
+	q := struct {
+		Data xledger.QLQuery[xledger.GLImportItem] `graphql:"addGLImportItems(inputs: {node :$node})"`
+	}{}
+
+	variables := map[string]interface{}{
+		"node": xledger.GLImportItemInput{
+			Text: "Omniboost TEST",
+		},
+	}
+	err := client.GraphQLClient().Mutate(context.Background(), &q, variables)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	d, _ := json.Marshal(q.Data.Edges[0].Node)
+	t.Log(string(d))
+}

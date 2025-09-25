@@ -307,12 +307,12 @@ type GLImportItemInput struct {
 	TransactionSource GLImportItemInputTransactionSource `json:"transactionSource"`
 	TaxAmount         string                             `json:"taxAmount,omitempty"`
 	TrRegNumber       int                                `json:"trRegNumber"`
-	PostedDate        Date                               `json:"postedDate"`
+	PostedDate        string                             `json:"postedDate"`
 	Quantity          int                                `json:"quantity"`
 	Text              string                             `json:"text,omitempty"`
 	YourReference     string                             `json:"yourReference,omitempty"`
-	DueDate           *Date                              `json:"dueDate,omitempty"`
-	InvoiceDate       *Date                              `json:"invoiceDate,omitempty"`
+	DueDate           *string                            `json:"dueDate,omitempty"`
+	InvoiceDate       *string                            `json:"invoiceDate,omitempty"`
 	InvoiceNumber     string                             `json:"invoiceNumber,omitempty"`
 	InvoiceAmount     string                             `json:"invoiceAmount,omitempty"`
 }
