@@ -344,3 +344,17 @@ type GLImportItemInputTransactionSource struct {
 func (GLImportItemInput) GetGraphQLType() string {
 	return "AddGLImportItemsInputNode"
 }
+
+type AddGLImportItemsInput []AddGLImportItemsInputNode
+
+func (AddGLImportItemsInput) GetGraphQLType() string {
+	return "[AddGLImportItemsInput!]"
+}
+
+type AddGLImportItemsInputNode struct {
+	Node GLImportItemInput `graphql:"node" json:"node"`
+}
+
+func (AddGLImportItemsInputNode) GetGraphQLType() string {
+	return "AddGLImportItemsInputNode"
+}
