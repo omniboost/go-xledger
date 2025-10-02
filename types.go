@@ -298,14 +298,14 @@ type TransactionSource struct {
 }
 
 type GLImportItemInput struct {
-	Account           GLImportItemInputAccount           `json:"account"`
-	Company           *GLImportItemCompany               `json:"company,omitempty"`
-	Amount            string                             `json:"amount"`
+	Account GLImportItemInputAccount `json:"account"`
+	Company *GLImportItemCompany     `json:"company,omitempty"`
+	Amount            Number                             `json:"amount"`
 	JobLevel          GLImportItemInputJobLevel          `json:"jobLevel"`
 	Currency          GLImportItemInputCurrency          `json:"currency"`
-	TaxRule           GLImportItemInputTaxRule           `json:"taxRule"`
+	TaxRule           *GLImportItemInputTaxRule           `json:"taxRule"`
 	TransactionSource GLImportItemInputTransactionSource `json:"transactionSource"`
-	TaxAmount         string                             `json:"taxAmount,omitempty"`
+	TaxAmount         Number                             `json:"taxAmount,omitempty"`
 	TrRegNumber       int                                `json:"trRegNumber"`
 	PostedDate        string                             `json:"postedDate"`
 	Quantity          int                                `json:"quantity"`
@@ -314,7 +314,7 @@ type GLImportItemInput struct {
 	DueDate           *string                            `json:"dueDate,omitempty"`
 	InvoiceDate       *string                            `json:"invoiceDate,omitempty"`
 	InvoiceNumber     string                             `json:"invoiceNumber,omitempty"`
-	InvoiceAmount     string                             `json:"invoiceAmount,omitempty"`
+	InvoiceAmount     Number                             `json:"invoiceAmount,omitempty"`
 }
 
 type GLImportItemCompany struct {
