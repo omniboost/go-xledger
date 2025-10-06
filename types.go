@@ -1,5 +1,10 @@
 package xledger
 
+import (
+	"github.com/cydev/zero"
+	"github.com/omniboost/go-xledger/omitempty"
+)
+
 type QLQueryPaginated[T any] struct {
 	PageInfo struct {
 		HasNextPage bool
@@ -212,31 +217,48 @@ type ObjectValue struct {
 	Description string     `graphql:"description"`
 }
 
-type CompaniesInput struct {
-	Description   string                `json:"description,omitempty"`
-	Code          string                `json:"code,omitempty"`
-	Country       CompaniesInputCountry `json:"country,omitempty"`
-	Address       CompaniesInputAddress `json:"address"`
-	TaxNumber     string                `json:"taxNumber,omitempty"`
-	CompanyNumber string                `json:"companyNumber,omitempty"`
-	Email         string                `json:"email,omitempty"`
-	Phone         string                `json:"phone,omitempty"`
-	Phone2        string                `json:"phone2,omitempty"`
+type CompanyInput struct {
+	Description   string              `json:"description,omitempty"`
+	Code          string              `json:"code,omitempty"`
+	Country       CompanyInputCountry `json:"country,omitempty"`
+	Address       CompanyInputAddress `json:"address"`
+	TaxNumber     string              `json:"taxNumber,omitempty"`
+	CompanyNumber string              `json:"companyNumber,omitempty"`
+	Email         string              `json:"email,omitempty"`
+	Phone         string              `json:"phone,omitempty"`
+	Phone2        string              `json:"phone2,omitempty"`
 }
 
-type CompaniesInputCountry struct {
+func (c CompanyInput) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(c)
+}
+
+func (c CompanyInput) IsEmpty() bool {
+	return zero.IsZero(c)
+}
+
+type CompanyInputCountry struct {
 	Code string `json:"code"`
 }
-type CompaniesInputAddress struct {
+
+func (c CompanyInputCountry) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(c)
+}
+
+func (c CompanyInputCountry) IsEmpty() bool {
+	return zero.IsZero(c)
+}
+
+type CompanyInputAddress struct {
 	Country       string `json:"country"`
 	StreetAddress string `json:"streetAddress,omitempty"`
 	ZipCode       string `json:"zipCode,omitempty"`
 	Place         string `json:"place,omitempty"`
 }
 
-func (CompaniesInput) GetGraphQLType() string {
-	return "AddCompaniesInputNode"
-}
+// func (CompaniesInput) GetGraphQLType() string {
+// 	return "AddCompaniesInputNode"
+// }
 
 type GLImportItem struct {
 	DBId              string            `graphql:"dbId"`
@@ -298,12 +320,12 @@ type TransactionSource struct {
 }
 
 type GLImportItemInput struct {
-	Account GLImportItemInputAccount `json:"account"`
-	Company *GLImportItemCompany     `json:"company,omitempty"`
+	Account           GLImportItemInputAccount           `json:"account"`
+	Company           *GLImportItemCompany               `json:"company,omitempty"`
 	Amount            Number                             `json:"amount"`
 	JobLevel          GLImportItemInputJobLevel          `json:"jobLevel"`
 	Currency          GLImportItemInputCurrency          `json:"currency"`
-	TaxRule           *GLImportItemInputTaxRule           `json:"taxRule"`
+	TaxRule           *GLImportItemInputTaxRule          `json:"taxRule"`
 	TransactionSource GLImportItemInputTransactionSource `json:"transactionSource"`
 	TaxAmount         Number                             `json:"taxAmount,omitempty"`
 	TrRegNumber       int                                `json:"trRegNumber"`
@@ -341,11 +363,11 @@ type GLImportItemInputTransactionSource struct {
 	Code string `json:"code"`
 }
 
+type AddGLImportItemsInput []AddGLImportItemsInputNode
+
 func (GLImportItemInput) GetGraphQLType() string {
 	return "AddGLImportItemsInputNode"
 }
-
-type AddGLImportItemsInput []AddGLImportItemsInputNode
 
 func (AddGLImportItemsInput) GetGraphQLType() string {
 	return "[AddGLImportItemsInput!]"
@@ -357,4 +379,22 @@ type AddGLImportItemsInputNode struct {
 
 func (AddGLImportItemsInputNode) GetGraphQLType() string {
 	return "AddGLImportItemsInputNode"
+}
+
+func (CompanyInput) GetGraphQLType() string {
+	return "AddCompaniesInputNode"
+}
+
+type AddCompaniesInput []AddCompaniesInputNode
+
+func (AddCompaniesInput) GetGraphQLType() string {
+	return "[AddCompaniesInput!]"
+}
+
+type AddCompaniesInputNode struct {
+	Node CompanyInput `graphql:"node" json:"node"`
+}
+
+func (AddCompaniesInputNode) GetGraphQLType() string {
+	return "AddCompaniesInputNode"
 }
