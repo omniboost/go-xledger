@@ -14,4 +14,5 @@ require (
 	github.com/coder/websocket v1.8.13 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
+	golang.org/x/time v0.13.0 // indirect
 )

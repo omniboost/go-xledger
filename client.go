@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/go-multierror"
 	"github.com/hasura/go-graphql-client"
 	"github.com/pkg/errors"
+	"golang.org/x/time/rate"
 )
 
 const (
@@ -48,6 +49,9 @@ func NewClient(httpClient *http.Client) *Client {
 	client.SetMediaType(mediaType)
 	client.SetCharset(charset)
 
+	// 10 request every 5 seconds
+	client.limiter = rate.NewLimiter(rate.Every(5*time.Second), 20)
+
 	return client
 }
 
@@ -58,14 +62,17 @@ func (f RoundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
 }
 
 func (c Client) GraphQLClient() *graphql.Client {
-	transport := http.DefaultTransport
+	originalTransport := http.DefaultTransport
 	timeout := time.Duration(0)
 	if c.http != nil {
 		timeout = c.http.Timeout
 		if c.http.Transport != nil {
-			transport = c.http.Transport
+			originalTransport = c.http.Transport
 		}
 	}
+
+	// add rate limiter to transport
+	transport := NewThrottledTransport(c.limiter, originalTransport)
 	httpClient := &http.Client{Transport: transport, Timeout: timeout}
 
 	if c.debug {
@@ -131,6 +138,8 @@ type Client struct {
 	// Optional function called after every successful request made to the DO Clients
 	beforeRequestDo    BeforeRequestDoCallback
 	onRequestCompleted RequestCompletionCallback
+
+	limiter *rate.Limiter
 }
 
 type BeforeRequestDoCallback func(*http.Client, *http.Request, interface{})
