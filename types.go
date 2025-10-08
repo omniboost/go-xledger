@@ -291,7 +291,7 @@ type GLImportItem struct {
 	//Archive              bool    `graphql:"archive"`
 	//Quantity             float64 `graphql:"quantity"`
 	//TrItemNumber         int     `graphql:"trItemNumber"`
-	//ExtOrderNumber       string  `graphql:"extOrderNumber"`
+	ExtOrderNumber string `graphql:"extOrderNumber"`
 	//PayDocText           *string `graphql:"payDocText"`
 	//PeriodStart          *Date   `graphql:"periodStart"`
 	//NumberPeriod         int     `graphql:"numberPeriod"`
@@ -337,10 +337,12 @@ type GLImportItemInput struct {
 	InvoiceDate       *string                            `json:"invoiceDate,omitempty"`
 	InvoiceNumber     string                             `json:"invoiceNumber,omitempty"`
 	InvoiceAmount     Number                             `json:"invoiceAmount,omitempty"`
+	ExtOrderNumber    string                             `json:"extOrderNumber,omitempty"`
 }
 
 type GLImportItemCompany struct {
-	Code string `json:"code"`
+	Code string `json:"code,omitempty"`
+	DBId int    `json:"dbId,omitempty"`
 }
 
 type GLImportItemInputAccount struct {
