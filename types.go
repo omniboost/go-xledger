@@ -218,6 +218,7 @@ type ObjectValue struct {
 }
 
 type CompanyInput struct {
+	DBId          int                 `json:"dbId,omitempty"`
 	Description   string              `json:"description,omitempty"`
 	Code          string              `json:"code,omitempty"`
 	Country       CompanyInputCountry `json:"country,omitempty"`
@@ -399,4 +400,19 @@ type AddCompaniesInputNode struct {
 
 func (AddCompaniesInputNode) GetGraphQLType() string {
 	return "AddCompaniesInputNode"
+}
+
+
+type UpdateCompaniesInput []UpdateCompaniesInputNode
+
+func (UpdateCompaniesInput) GetGraphQLType() string {
+	return "[UpdateCompaniesInput!]"
+}
+
+type UpdateCompaniesInputNode struct {
+	Node CompanyInput `graphql:"node" json:"node"`
+}
+
+func (UpdateCompaniesInputNode) GetGraphQLType() string {
+	return "UpdateCompaniesInputNode"
 }
