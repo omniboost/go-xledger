@@ -205,6 +205,10 @@ type Company struct {
 	TaxNo         string   `graphql:"taxNo"`
 }
 
+func (c Company) IsZero() bool {
+	return zero.IsZero(c)
+}
+
 type ObjectKind struct {
 	DBId string `graphql:"dbId"`
 	Name string `graphql:"name"`
@@ -322,7 +326,7 @@ type TransactionSource struct {
 
 type GLImportItemInput struct {
 	Account           GLImportItemInputAccount           `json:"account"`
-	Company           *GLImportItemCompany               `json:"company,omitempty"`
+	Company           GLImportItemCompany                `json:"company,omitzero"`
 	Amount            Number                             `json:"amount"`
 	JobLevel          GLImportItemInputJobLevel          `json:"jobLevel"`
 	Currency          GLImportItemInputCurrency          `json:"currency"`
