@@ -343,23 +343,24 @@ type GLImportItemInput struct {
 	InvoiceNumber     string                             `json:"invoiceNumber,omitempty"`
 	InvoiceAmount     Number                             `json:"invoiceAmount,omitempty"`
 	ExtOrderNumber    string                             `json:"extOrderNumber,omitempty"`
-	GLObject1         GLObject                           `json:"gl_object_1,omitzero"`
-	GLObject2         GLObject                           `json:"gl_object_2,omitzero"`
-	GLObject3         GLObject                           `json:"gl_object_3,omitzero"`
-	GLObject4         GLObject                           `json:"gl_object_4,omitzero"`
-	GLObject5         GLObject                           `json:"gl_object_5,omitzero"`
+	GLObject1         Ref                                `json:"gl_object_1,omitzero"`
+	GLObject2         Ref                                `json:"gl_object_2,omitzero"`
+	GLObject3         Ref                                `json:"gl_object_3,omitzero"`
+	GLObject4         Ref                                `json:"gl_object_4,omitzero"`
+	GLObject5         Ref                                `json:"gl_object_5,omitzero"`
+	Entity            Ref                                `json:"entity,omitzero"`
 }
 
-type GLObject struct {
-	Code             string `graphql:"code,omitempty"`
-	DBId             int    `graphql:"dbId,omitempty"`
-	Description      string `graphql:"description,omitempty"`
-	ShowAlternatives bool   `graphql:"showAlternatives,omitempty"`
-	Specificity      string `graphql:"specificity,omitempty"`
+type Ref struct {
+	Code             string `json:"code,omitempty"`
+	DBID             int    `json:"dbId,omitempty"`
+	Description      string `json:"description,omitempty"`
+	ShowAlternatives bool   `json:"showAlternatives,omitempty"`
+	Specificity      string `json:"specificity,omitempty"`
 }
 
-func (g GLObject) IsZero() bool {
-	return zero.IsZero(g)
+func (r Ref) IsZero() bool {
+	return zero.IsZero(r)
 }
 
 type GLImportItemCompany struct {
