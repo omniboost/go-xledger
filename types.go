@@ -350,6 +350,7 @@ type GLImportItemInput struct {
 	GLObject5         Ref                                `json:"glObject5,omitzero"`
 	Entity            Ref                                `json:"entity,omitzero"`
 	Owner             Ref                                `json:"owner,omitzero"`
+	Project           Ref                                `json:"project,omitzero"`
 }
 
 type Ref struct {
