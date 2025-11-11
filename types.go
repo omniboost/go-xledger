@@ -343,11 +343,11 @@ type GLImportItemInput struct {
 	InvoiceNumber     string                             `json:"invoiceNumber,omitempty"`
 	InvoiceAmount     Number                             `json:"invoiceAmount,omitempty"`
 	ExtOrderNumber    string                             `json:"extOrderNumber,omitempty"`
-	GLObject1         Ref                                `json:"gl_object_1,omitzero"`
-	GLObject2         Ref                                `json:"gl_object_2,omitzero"`
-	GLObject3         Ref                                `json:"gl_object_3,omitzero"`
-	GLObject4         Ref                                `json:"gl_object_4,omitzero"`
-	GLObject5         Ref                                `json:"gl_object_5,omitzero"`
+	GLObject1         Ref                                `json:"glObject1,omitzero"`
+	GLObject2         Ref                                `json:"glObject2,omitzero"`
+	GLObject3         Ref                                `json:"glObject3,omitzero"`
+	GLObject4         Ref                                `json:"glObject4,omitzero"`
+	GLObject5         Ref                                `json:"glObject5,omitzero"`
 	Entity            Ref                                `json:"entity,omitzero"`
 	Owner             Ref                                `json:"owner,omitzero"`
 }
