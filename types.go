@@ -285,6 +285,7 @@ type GLImportItem struct {
 	Account           Account           `graphql:"account"`
 	Currency          *Currency         `graphql:"currency"`
 	TaxRule           *TaxRule          `graphql:"taxRule"`
+	Subledger         *SubLedger        `graphql:"subledger"`
 	//OwnerDbId            int     `graphql:"ownerDbId"`
 	//ExchangeRate         float64 `graphql:"exchangeRate"`
 	//ExtIdentifier        string  `graphql:"extIdentifier"`
@@ -332,6 +333,7 @@ type GLImportItemInput struct {
 	Currency          GLImportItemInputCurrency          `json:"currency"`
 	TaxRule           *GLImportItemInputTaxRule          `json:"taxRule"`
 	TransactionSource GLImportItemInputTransactionSource `json:"transactionSource"`
+	Subledger         Ref                                `json:"subledger,omitzero"`
 	TaxAmount         Number                             `json:"taxAmount,omitempty"`
 	TrRegNumber       int                                `json:"trRegNumber"`
 	PostedDate        string                             `json:"postedDate"`
