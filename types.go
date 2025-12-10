@@ -570,3 +570,13 @@ type FlexiFieldInput struct {
 	Text7     string   `json:"text7,omitempty"`
 	Text8     string   `json:"text8,omitempty"`
 }
+
+type UpdateCustomersInput []UpdateCustomersInputNode
+
+type UpdateCustomersInputNode struct {
+	Node CustomerInput `graphql:"node" json:"node"`
+}
+
+func (UpdateCustomersInputNode) GetGraphQLType() string {
+	return "UpdateCustomersInputNode"
+}
