@@ -225,13 +225,18 @@ type CompanyInput struct {
 	DBId          int                 `json:"dbId,omitempty"`
 	Description   string              `json:"description,omitempty"`
 	Code          string              `json:"code,omitempty"`
-	Country       CompanyInputCountry `json:"country,omitempty"`
-	Address       CompanyInputAddress `json:"address"`
+	Country       CompanyInputCountry `json:"country,omitzero"`
+	Address       CompanyInputAddress `json:"address,omitzero"`
 	TaxNumber     string              `json:"taxNumber,omitempty"`
+	CompanyName   string              `json:"companyName"`
 	CompanyNumber string              `json:"companyNumber,omitempty"`
 	Email         string              `json:"email,omitempty"`
+	Name          string              `json:"name"`
+	Notes         string              `json:"notes,omitempty"`
 	Phone         string              `json:"phone,omitempty"`
 	Phone2        string              `json:"phone2,omitempty"`
+	Phone3        string              `json:"phone3,omitempty"`
+	TaxNo         string              `json:"taxNo,omitempty"`
 }
 
 func (c CompanyInput) MarshalJSON() ([]byte, error) {
@@ -356,11 +361,20 @@ type GLImportItemInput struct {
 }
 
 type Ref struct {
-	Code             string `json:"code,omitempty"`
-	DBID             int    `json:"dbId,omitempty"`
-	Description      string `json:"description,omitempty"`
-	ShowAlternatives bool   `json:"showAlternatives,omitempty"`
-	Specificity      string `json:"specificity,omitempty"`
+	// Lookup reference matching field code.
+	Code string `json:"code,omitempty"`
+	// Lookup reference matching field dbId.
+	DBID int `json:"dbId,omitempty"`
+	// Lookup reference matching field dbSubId.
+	DBSubID     int    `json:"dbSubId,omitempty"`
+	Description string `json:"description,omitempty"`
+	// Providing YES here indicates that you want to show what alternatives are available.
+	// Warning: This property is intended for exploration during development. If you use this property anywhere, the request will return an error with a list of alternatives, and no mutations will take place.
+	ShowAlternatives bool `json:"showAlternatives,omitempty"`
+	// Specifies how reference resolution will happen (defaults to EXACTLY_ONE).
+	Specificity string `json:"specificity,omitempty"`
+	// Lookup reference matching field name.
+	Name string `json:"name,omitempty"`
 }
 
 func (r Ref) IsZero() bool {
@@ -428,7 +442,6 @@ func (AddCompaniesInputNode) GetGraphQLType() string {
 	return "AddCompaniesInputNode"
 }
 
-
 type UpdateCompaniesInput []UpdateCompaniesInputNode
 
 func (UpdateCompaniesInput) GetGraphQLType() string {
@@ -441,4 +454,119 @@ type UpdateCompaniesInputNode struct {
 
 func (UpdateCompaniesInputNode) GetGraphQLType() string {
 	return "UpdateCompaniesInputNode"
+}
+
+type AddCustomersInput []AddCustomersInputNode
+
+type AddCustomersInputNode struct {
+	Node CustomerInput `graphql:"node" json:"node"`
+}
+
+func (AddCustomersInputNode) GetGraphQLType() string {
+	return "AddCustomersInputNode"
+}
+
+type CustomerInput struct {
+	Code                  string          `json:"code,omitempty"`
+	Description           string          `json:"description,omitempty"`
+	CompanyNumber         string          `json:"companyNumber,omitempty"`
+	Email                 string          `json:"email,omitempty"`
+	StreetAddress         string          `json:"streetAddress,omitempty"`
+	ZipCode               string          `json:"zipCode,omitempty"`
+	Place                 string          `json:"place,omitempty"`
+	StreetAddress2        string          `json:"streetAddress2,omitempty"`
+	ZipCode2              string          `json:"zipCode2,omitempty"`
+	Place2                string          `json:"place2,omitempty"`
+	Phone                 string          `json:"phone,omitempty"`
+	PhoneNumber2          string          `json:"phoneNumber2,omitempty"`
+	TaxNumber             string          `json:"taxNumber,omitempty"`
+	BankAccount           string          `json:"bankAccount,omitempty"`
+	PaymentNotification   *bool           `json:"paymentNotification,omitempty"`
+	CompanyName           string          `json:"companyName,omitempty"`
+	Name                  string          `json:"name,omitempty"`
+	YourReference         string          `json:"yourReference,omitempty"`
+	Language              Ref             `json:"language,omitzero"`
+	InvoiceDeliveryMethod Ref             `json:"invoiceDeliveryMethod,omitzero"`
+	Company               Ref             `json:"company,omitzero"`
+	Country               Ref             `json:"country,omitzero"`
+	Address               Ref             `json:"address,omitzero"`
+	BillAddress           Ref             `json:"billAddress,omitzero"`
+	ShipAddress           Ref             `json:"shipAddress,omitzero"`
+	FlexiFieldItem        FlexiFieldInput `json:"flexiFieldItem,omitzero"`
+	InvoiceLayout         Ref             `json:"invoiceLayout,omitzero"`
+	PayTerms              Ref             `json:"payTerms,omitzero"`
+	GLObject1             Ref             `json:"glObject1,omitzero"`
+	GLObject2             Ref             `json:"glObject2,omitzero"`
+	Pricelist             Ref             `json:"pricelist,omitzero"`
+	PriceGroup            Ref             `json:"priceGroup,omitzero"`
+	ReportSetup           Ref             `json:"reportSetup,omitzero"`
+	State                 Ref             `json:"state,omitzero"`
+	Collection            Ref             `json:"collection,omitzero"`
+	GLObject3             Ref             `json:"glObject3,omitzero"`
+	GLObject4             Ref             `json:"glObject4,omitzero"`
+	GLObject5             Ref             `json:"glObject5,omitzero"`
+	OurRef                Ref             `json:"ourRef,omitzero"`
+	Owner                 Ref             `json:"owner,omitzero"`
+	SubledgerGroup        Ref             `json:"subledgerGroup,omitzero"`
+	Country3              Ref             `json:"country3,omitzero"`
+	Contract              string          `json:"contract,omitempty"`
+	XGL                   Ref             `json:"xgl,omitzero"`
+	Country2              Ref             `json:"country2,omitzero"`
+	Notes                 string          `json:"notes,omitempty"`
+	OurSales              Ref             `json:"ourSales,omitzero"`
+	PayMethod             Ref             `json:"payMethod,omitzero"`
+	FromDate              Date            `json:"fromDate,omitzero"`
+	ToDate                Date            `json:"toDate,omitzero"`
+	Currency              Ref             `json:"currency,omitzero"`
+	Bank                  Ref             `json:"bank,omitzero"`
+	CreditLimit           string          `json:"creditLimit,omitempty"`
+	IsIntraGroup          *bool           `json:"isIntraGroup,omitempty"`
+	TaxRule               Ref             `json:"taxRule,omitzero"`
+
+	// Deprecated, argument will be removed in a future update.
+	Swift string `json:"swift,omitempty"`
+
+	// Deprecated, argument will be removed in a future update.
+	BankRouting string `json:"bankRouting,omitempty"`
+}
+
+func (c CustomerInput) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(c)
+}
+
+func (c CustomerInput) IsEmpty() bool {
+	return zero.IsZero(c)
+}
+
+type FlexiFieldInput struct {
+	Flag1     *bool    `json:"flag1,omitempty"`
+	Flag2     *bool    `json:"flag2,omitempty"`
+	Flag3     *bool    `json:"flag3,omitempty"`
+	Flag4     *bool    `json:"flag4,omitempty"`
+	Date1     Date     `json:"date1,omitzero"`
+	Date2     Date     `json:"date2,omitzero"`
+	Date3     Date     `json:"date3,omitzero"`
+	Date4     Date     `json:"date4,omitzero"`
+	Value1    *float64 `json:"value1,omitempty"`
+	Value2    *float64 `json:"value2,omitempty"`
+	Value3    *float64 `json:"value3,omitempty"`
+	Value4    *float64 `json:"value4,omitempty"`
+	Number1   *int     `json:"number1,omitempty"`
+	Number2   *int     `json:"number2,omitempty"`
+	Code1DbId *int     `json:"code1DbId,omitempty"`
+	Code2DbId *int     `json:"code2DbId,omitempty"`
+	Code3DbId *int     `json:"code3DbId,omitempty"`
+	Code4DbId *int     `json:"code4DbId,omitempty"`
+	Code5DbId *int     `json:"code5DbId,omitempty"`
+	Code6DbId *int     `json:"code6DbId,omitempty"`
+	Code7DbId *int     `json:"code7DbId,omitempty"`
+	Code8DbId *int     `json:"code8DbId,omitempty"`
+	Text1     string   `json:"text1,omitempty"`
+	Text2     string   `json:"text2,omitempty"`
+	Text3     string   `json:"text3,omitempty"`
+	Text4     string   `json:"text4,omitempty"`
+	Text5     string   `json:"text5,omitempty"`
+	Text6     string   `json:"text6,omitempty"`
+	Text7     string   `json:"text7,omitempty"`
+	Text8     string   `json:"text8,omitempty"`
 }

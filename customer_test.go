@@ -56,3 +56,25 @@ func TestCustomerGet(t *testing.T) {
 	d, _ := json.Marshal(q.Data.Edges[0].Node)
 	t.Log(string(d))
 }
+
+func TestCustomerAdd(t *testing.T) {
+	q := struct {
+		Data xledger.QLQuery[xledger.Company] `graphql:"addCustomers(inputs: {node :$node})"`
+	}{}
+
+	variables := map[string]any{
+		"node": xledger.CustomerInput{
+			Description: "Omniboost TEST",
+			Code:        "OMNI1234",
+			TaxNumber:   "NO999999999",
+			Phone:       "12345678",
+		},
+	}
+	err := client.GraphQLClient().Mutate(context.Background(), &q, variables)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	d, _ := json.Marshal(q.Data.Edges[0].Node)
+	t.Log(string(d))
+}
