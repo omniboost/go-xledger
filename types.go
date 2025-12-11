@@ -221,32 +221,6 @@ type ObjectValue struct {
 	Description string     `graphql:"description"`
 }
 
-type CompanyInput struct {
-	DBId          int                 `json:"dbId,omitempty"`
-	Description   string              `json:"description,omitempty"`
-	Code          string              `json:"code,omitempty"`
-	Country       CompanyInputCountry `json:"country,omitzero"`
-	Address       CompanyInputAddress `json:"address,omitzero"`
-	TaxNumber     string              `json:"taxNumber,omitempty"`
-	CompanyName   string              `json:"companyName"`
-	CompanyNumber string              `json:"companyNumber,omitempty"`
-	Email         string              `json:"email,omitempty"`
-	Name          string              `json:"name"`
-	Notes         string              `json:"notes,omitempty"`
-	Phone         string              `json:"phone,omitempty"`
-	Phone2        string              `json:"phone2,omitempty"`
-	Phone3        string              `json:"phone3,omitempty"`
-	TaxNo         string              `json:"taxNo,omitempty"`
-}
-
-func (c CompanyInput) MarshalJSON() ([]byte, error) {
-	return omitempty.MarshalJSON(c)
-}
-
-func (c CompanyInput) IsEmpty() bool {
-	return zero.IsZero(c)
-}
-
 type CompanyInputCountry struct {
 	Code string `json:"code"`
 }
@@ -424,10 +398,6 @@ func (AddGLImportItemsInputNode) GetGraphQLType() string {
 	return "AddGLImportItemsInputNode"
 }
 
-func (CompanyInput) GetGraphQLType() string {
-	return "AddCompaniesInputNode"
-}
-
 type AddCompaniesInput []AddCompaniesInputNode
 
 func (AddCompaniesInput) GetGraphQLType() string {
@@ -435,7 +405,7 @@ func (AddCompaniesInput) GetGraphQLType() string {
 }
 
 type AddCompaniesInputNode struct {
-	Node CompanyInput `graphql:"node" json:"node"`
+	Node AddCompanyInput `graphql:"node" json:"node"`
 }
 
 func (AddCompaniesInputNode) GetGraphQLType() string {
@@ -605,5 +575,28 @@ func (c UpdateCompanyInput) MarshalJSON() ([]byte, error) {
 }
 
 func (c UpdateCompanyInput) IsEmpty() bool {
+	return zero.IsZero(c)
+}
+
+type AddCompanyInput struct {
+	CompanyNumber string              `json:"companyNumber,omitempty"`
+	Email         string              `json:"email,omitempty"`
+	Code          string              `json:"code,omitempty"`
+	Description   string              `json:"description,omitempty"`
+	TaxNumber     string              `json:"taxNumber,omitempty"`
+	SocialSec     string              `json:"socialSec,omitempty"`
+	Phone         string              `json:"phone,omitempty"`
+	Phone2        string              `json:"phone2,omitempty"`
+	Owner         Ref                 `json:"owner,omitzero"`
+	Country       CompanyInputCountry `json:"country,omitzero"`
+	Address       CompanyInputAddress `json:"address,omitzero"`
+	ShipAddress   CompanyInputAddress `json:"shipAddress,omitzero"`
+}
+
+func (c AddCompanyInput) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(c)
+}
+
+func (c AddCompanyInput) IsEmpty() bool {
 	return zero.IsZero(c)
 }
