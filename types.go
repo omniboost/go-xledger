@@ -22,10 +22,10 @@ type QLQuery[T any] struct {
 }
 
 type Account struct {
-	DBId                  int      `graphql:"dbId"`
+	DBID                  int      `graphql:"dbId"`
 	Code                  string   `graphql:"code"`
 	Description           string   `graphql:"description"`
-	OwnerDBId             int      `graphql:"ownerDbId"`
+	OwnerDBID             int      `graphql:"ownerDbId"`
 	ModifiedAt            DateTime `graphql:"modifiedAt"`
 	BalanceSheet          bool     `graphql:"balanceSheet"`
 	Asset                 bool     `graphql:"asset"`
@@ -36,8 +36,8 @@ type Account struct {
 	Liabilities           bool     `graphql:"liabilities"`
 	Posting               bool     `graphql:"posting"`
 	Revenue               bool     `graphql:"revenue"`
-	ChartOfAccountDBId    int      `graphql:"chartOfAccountDbId"`
-	AccountGroupDBId      int      `graphql:"accountGroupDbId"`
+	ChartOfAccountDBID    int      `graphql:"chartOfAccountDbId"`
+	AccountGroupDBID      int      `graphql:"accountGroupDbId"`
 	Group                 bool     `graphql:"group"`
 	DescriptionTranslated string   `graphql:"descriptionTranslated"`
 	YearEnd               bool     `graphql:"yearEnd"`
@@ -58,7 +58,7 @@ type Account struct {
 type Customer struct {
 	IsIntraGroup          bool     `graphql:"isIntraGroup"`
 	Email                 string   `graphql:"email"`
-	DBId                  int      `graphql:"dbId"`
+	DBID                  int      `graphql:"dbId"`
 	ExtIdentifier         string   `graphql:"extIdentifier"`
 	CreatedAt             DateTime `graphql:"createdAt"`
 	ModifiedAt            DateTime `graphql:"modifiedAt"`
@@ -69,7 +69,7 @@ type Customer struct {
 	ToDate                string   `graphql:"toDate"`
 	Code                  string   `graphql:"code"`
 	Description           string   `graphql:"description"`
-	OwnerDBId             int      `graphql:"ownerDbId"`
+	OwnerDBID             int      `graphql:"ownerDbId"`
 	CodeTranslated        string   `graphql:"codeTranslated"`
 	DescriptionTranslated string   `graphql:"descriptionTranslated"`
 	ID                    string   `graphql:"id"`
@@ -82,8 +82,8 @@ type Customer struct {
 	TaxNo                 string   `graphql:"taxNo"`
 	PayDocText            string   `graphql:"payDocText"`
 	BankAccount           string   `graphql:"bankAccount"`
-	CompanyDBId           int      `graphql:"companyDbId"`
-	SubledgerGroupDBId    int      `graphql:"subledgerGroupDbId"`
+	CompanyDBID           int      `graphql:"companyDbId"`
+	SubledgerGroupDBID    int      `graphql:"subledgerGroupDbId"`
 	//HasFlexiField         bool     `graphql:"hasFlexiField"`
 	//FlexiFieldFlag1       bool     `graphql:"flexiFieldFlag1"`
 	//FlexiFieldFlag2       bool     `graphql:"flexiFieldFlag2"`
@@ -107,14 +107,14 @@ type Customer struct {
 	//FlexiFieldText6       string   `graphql:"flexiFieldText6"`
 	//FlexiFieldText7       string   `graphql:"flexiFieldText7"`
 	//FlexiFieldText8       string   `graphql:"flexiFieldText8"`
-	//FlexiFieldCode1DBId   int      `graphql:"flexiFieldCode1DbId"`
-	//FlexiFieldCode2DBId   int      `graphql:"flexiFieldCode2DbId"`
-	//FlexiFieldCode3DBId   int      `graphql:"flexiFieldCode3DbId"`
-	//FlexiFieldCode4DBId   int      `graphql:"flexiFieldCode4DbId"`
-	//FlexiFieldCode5DBId   int      `graphql:"flexiFieldCode5DbId"`
-	//FlexiFieldCode6DBId   int      `graphql:"flexiFieldCode6DbId"`
-	//FlexiFieldCode7DBId   int      `graphql:"flexiFieldCode7DbId"`
-	//FlexiFieldCode8DBId   int      `graphql:"flexiFieldCode8DbId"`
+	//FlexiFieldCode1DBID   int      `graphql:"flexiFieldCode1DbId"`
+	//FlexiFieldCode2DBID   int      `graphql:"flexiFieldCode2DbId"`
+	//FlexiFieldCode3DBID   int      `graphql:"flexiFieldCode3DbId"`
+	//FlexiFieldCode4DBID   int      `graphql:"flexiFieldCode4DbId"`
+	//FlexiFieldCode5DBID   int      `graphql:"flexiFieldCode5DbId"`
+	//FlexiFieldCode6DBID   int      `graphql:"flexiFieldCode6DbId"`
+	//FlexiFieldCode7DBID   int      `graphql:"flexiFieldCode7DbId"`
+	//FlexiFieldCode8DBID   int      `graphql:"flexiFieldCode8DbId"`
 	//PriceList              interface{} `graphql:"priceList"`
 	//PriceGroup             interface{} `graphql:"priceGroup"`
 	//ReportSetup            interface{} `graphql:"reportSetup"`
@@ -163,31 +163,31 @@ type Address struct {
 }
 
 type Country struct {
-	DBId        int    `graphql:"dbId"`
+	DBID        int    `graphql:"dbId"`
 	Code        string `graphql:"code"`
 	Description string `graphql:"description"`
 }
 
 type Currency struct {
-	DBId        int    `graphql:"dbId"`
+	DBID        int    `graphql:"dbId"`
 	Description string `graphql:"description"`
 	Code        string `graphql:"code"`
 }
 
 type SubLedger struct {
-	DBId        int    `graphql:"dbId"`
+	DBID        int    `graphql:"dbId"`
 	Description string `graphql:"description"`
 }
 
 type TaxCode struct {
-	DBId      int    `graphql:"dbId"`
+	DBID      int    `graphql:"dbId"`
 	OwnerDbId int    `graphql:"ownerDbId"`
 	Text      string `graphql:"text"`
 	Code      string `graphql:"code"`
 }
 
 type Company struct {
-	DBId          int      `graphql:"dbId"`
+	DBID          int      `graphql:"dbId"`
 	Description   string   `graphql:"description"`
 	Code          string   `graphql:"code"`
 	Country       string   `graphql:"country"`
@@ -210,12 +210,12 @@ func (c Company) IsZero() bool {
 }
 
 type ObjectKind struct {
-	DBId string `graphql:"dbId"`
+	DBID string `graphql:"dbId"`
 	Name string `graphql:"name"`
 }
 
 type ObjectValue struct {
-	DBId        int        `graphql:"dbId"`
+	DBID        int        `graphql:"dbId"`
 	ObjectKind  ObjectKind `graphql:"objectKind"`
 	Code        string     `graphql:"code"`
 	Description string     `graphql:"description"`
@@ -245,7 +245,7 @@ type CompanyInputAddress struct {
 // }
 
 type GLImportItem struct {
-	DBId              string            `graphql:"dbId"`
+	DBID              string            `graphql:"dbId"`
 	PostedDate        Date              `graphql:"postedDate"`
 	InvoiceNumber     *string           `graphql:"invoiceNumber"`
 	Text              *string           `graphql:"text"`
@@ -357,7 +357,7 @@ func (r Ref) IsZero() bool {
 
 type GLImportItemCompany struct {
 	Code string `json:"code,omitempty"`
-	DBId int    `json:"dbId,omitempty"`
+	DBID int    `json:"dbId,omitempty"`
 }
 
 type GLImportItemInputAccount struct {
@@ -546,6 +546,10 @@ type FlexiFieldInput struct {
 }
 
 type UpdateCustomersInput []UpdateCustomersInputNode
+
+func (UpdateCustomersInput) GetGraphQLType() string {
+	return "[UpdateCustomersInput!]"
+}
 
 type UpdateCustomersInputNode struct {
 	Node CustomerInput `graphql:"node" json:"node"`
