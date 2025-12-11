@@ -449,7 +449,7 @@ func (UpdateCompaniesInput) GetGraphQLType() string {
 }
 
 type UpdateCompaniesInputNode struct {
-	Node CompanyInput `graphql:"node" json:"node"`
+	Node UpdateCompanyInput `graphql:"node" json:"node"`
 }
 
 func (UpdateCompaniesInputNode) GetGraphQLType() string {
@@ -457,6 +457,10 @@ func (UpdateCompaniesInputNode) GetGraphQLType() string {
 }
 
 type AddCustomersInput []AddCustomersInputNode
+
+func (AddCustomersInput) GetGraphQLType() string {
+	return "[AddCustomersInput!]"
+}
 
 type AddCustomersInputNode struct {
 	Node CustomerInput `graphql:"node" json:"node"`
@@ -579,4 +583,27 @@ type UpdateCustomersInputNode struct {
 
 func (UpdateCustomersInputNode) GetGraphQLType() string {
 	return "UpdateCustomersInputNode"
+}
+
+type UpdateCompanyInput struct {
+	DBID          int                 `json:"dbId,omitempty"`
+	CompanyNumber string              `json:"companyNumber,omitempty"`
+	Email         string              `json:"email,omitempty"`
+	Code          string              `json:"code,omitempty"`
+	Description   string              `json:"description,omitempty"`
+	TaxNumber     string              `json:"taxNumber,omitempty"`
+	SocialSec     string              `json:"socialSec,omitempty"`
+	Phone         string              `json:"phone,omitempty"`
+	Phone2        string              `json:"phone2,omitempty"`
+	Country       CompanyInputCountry `json:"country,omitzero"`
+	Address       CompanyInputAddress `json:"address,omitzero"`
+	ShipAddress   CompanyInputAddress `json:"shipAddress,omitzero"`
+}
+
+func (c UpdateCompanyInput) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(c)
+}
+
+func (c UpdateCompanyInput) IsEmpty() bool {
+	return zero.IsZero(c)
 }

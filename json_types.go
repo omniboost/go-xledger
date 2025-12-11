@@ -14,6 +14,10 @@ func (d Date) MarshalSchema() string {
 	return d.Time.Format("2006-01-02")
 }
 
+func (d Date) IsZero() bool {
+	return d.Time.IsZero()
+}
+
 func (d Date) IsEmpty() bool {
 	return d.Time.IsZero()
 }
@@ -82,6 +86,14 @@ func (dt *DateTime) UnmarshalJSON(text []byte) (err error) {
 
 	dt.Time, err = time.Parse("2006-01-02T15:04:05", value)
 	return err
+}
+
+func (dt DateTime) IsZero() bool {
+	return dt.Time.IsZero()
+}
+
+func (dt DateTime) IsEmpty() bool {
+	return dt.Time.IsZero()
 }
 
 type Number float64
