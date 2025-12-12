@@ -441,6 +441,9 @@ func (AddCustomersInputNode) GetGraphQLType() string {
 }
 
 type CustomerInput struct {
+	// only used for update
+	DBID int `json:"dbId,omitempty"`
+
 	Code                  string          `json:"code,omitempty"`
 	Description           string          `json:"description,omitempty"`
 	CompanyNumber         string          `json:"companyNumber,omitempty"`
