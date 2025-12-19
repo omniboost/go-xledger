@@ -423,18 +423,17 @@ func CheckResponse(r *http.Response) error {
 }
 
 // {
-//    "Errors": [
-//        {
-//            "Name": "OData Query Error",
-//            "Message": "Please check your OData query: Syntax error at position 13 in 'Number desc54'.",
-//            "AdditionalDetails": "",
-//            "ErrorCode": 0,
-//            "Severity": null,
-//            "LearnMore": null
-//        }
-//    ],
-//    "Information": "Warning, error messages have not been finalised in this release and may change"
-//}
+//   "errors": [
+//     {
+//       "code": "BAD_REQUEST.BURST_RATE_LIMIT_REACHED",
+//       "message": "Too many requests in the last 5 seconds. Please wait a few seconds before sending more requests. See `rateLimit.burstLimit` and `rateLimit.burstRequests`.",
+//       "extensions": {
+//         "burstLimit": 20,
+//         "burstRequests": 21
+//       }
+//     }
+//   ]
+// }
 
 type ErrorResponse struct {
 	// HTTP response that caused this error
@@ -442,12 +441,9 @@ type ErrorResponse struct {
 
 	// Timestamp DateTime    `json:"timestamp"`
 	Errors []struct {
-		Name              string `json:"Name"`
-		Message           string `json:"Message"`
-		AdditionalDetails string `json:"AdditionalDetails"`
-		ErrorCode         int    `json:"ErrorCode"`
-		Severity          string `json:"Severity"`
-		LearnMore         string `json:"LearnMore"`
+		Code       string         `json:"Code"`
+		Message    string         `json:"Message"`
+		Extensions map[string]any `json:"Extensions"`
 	} `json:"Errors"`
 	Information string `json:"Information"`
 }
@@ -459,7 +455,7 @@ func (r *ErrorResponse) Error() string {
 
 	var errs *multierror.Error
 	for _, e := range r.Errors {
-		m := fmt.Sprintf("%s: %s", e.Name, e.Message)
+		m := fmt.Sprintf("%s: %s", e.Code, e.Message)
 		errs = multierror.Append(errs, errors.New(m))
 	}
 
