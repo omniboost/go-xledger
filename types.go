@@ -484,7 +484,7 @@ type CustomerInput struct {
 	GLObject5             Ref             `json:"glObject5,omitzero"`
 	OurRef                Ref             `json:"ourRef,omitzero"`
 	Owner                 Ref             `json:"owner,omitzero"`
-	SubledgerGroupDBID    Ref             `json:"subledgerGroupDbId,omitzero"`
+	SubledgerGroup        Ref             `json:"subledgerGroup,omitzero"`
 	Country3              Ref             `json:"country3,omitzero"`
 	Contract              string          `json:"contract,omitempty"`
 	XGL                   Ref             `json:"xgl,omitzero"`
