@@ -516,6 +516,72 @@ func (c CustomerInput) IsEmpty() bool {
 	return zero.IsZero(c)
 }
 
+type UpdateCustomerInput struct {
+	AddressDBID int    `json:"addressDbId,omitempty"`
+	BankAccount string `json:"bankAccount,omitempty"`
+	BankRouting string `json:"bankRouting,omitempty"`
+	// Deprecated, argument will be removed in a future update.
+	BillAddressDBID int             `json:"billAddressDbId,omitempty"`
+	Code            string          `json:"code,omitempty"`
+	CollectionDBID  int             `json:"collectionDbId,omitempty"`
+	CompanyDBID     int             `json:"companyDbId,omitempty"`
+	CompanyName     string          `json:"companyName,omitempty"`
+	CompanyNumber   string          `json:"companyNumber,omitempty"`
+	Contract        string          `json:"contract,omitempty"`
+	Country2DBID    int             `json:"country2DbId,omitempty"`
+	Country3DBID    int             `json:"country3DbId,omitempty"`
+	CountryDBID     int             `json:"countryDbId,omitempty"`
+	DBID            int             `json:"dbId,omitempty"`
+	Description     string          `json:"description,omitempty"`
+	Email           string          `json:"email,omitempty"`
+	FlexiFieldItem  FlexiFieldInput `json:"flexiFieldItem,omitzero"`
+	FromDate        Date            `json:"fromDate,omitzero"`
+	GLObject1DBID   int             `json:"glObject1DbId,omitempty"`
+	GLObject2DBID   int             `json:"glObject2DbId,omitempty"`
+	GLObject3DBID   int             `json:"glObject3DbId,omitempty"`
+	GLObject4DBID   int             `json:"glObject4DbId,omitempty"`
+	GLObject5DBID   int             `json:"glObject5DbId,omitempty"`
+	InvoiceDeliveryMethodDBID int `json:"invoiceDeliveryMethodDbId,omitempty"`
+	InvoiceLayoutDBID         int `json:"invoiceLayoutDbId,omitempty"`
+	LanguageDBID              int `json:"languageDbId,omitempty"`
+	Name                      string `json:"name,omitempty"`
+	Notes                     string `json:"notes,omitempty"`
+	OurRefDBID                int    `json:"ourRefDbId,omitempty"`
+	OurSalesDBID              int    `json:"ourSalesDbId,omitempty"`
+	PaymentNotification       *bool  `json:"paymentNotification,omitempty"`
+	PayMethodDBID             int    `json:"payMethodDbId,omitempty"`
+	PayTermsDBID              int    `json:"payTermsDbId,omitempty"`
+	Phone                     string `json:"phone,omitempty"`
+	PhoneNumber2              string `json:"phoneNumber2,omitempty"`
+	PhoneNumber3              string `json:"phoneNumber3,omitempty"`
+	Place                     string `json:"place,omitempty"`
+	Place2                    string `json:"place2,omitempty"`
+	PriceGroupDBID            int    `json:"priceGroupDbId,omitempty"`
+	PricelistDBID             int    `json:"pricelistDbId,omitempty"`
+	ReportSetupDBID           int    `json:"reportSetupDbId,omitempty"`
+	ShipAddressDBID           int    `json:"shipAddressDbId,omitempty"`
+	StateDBID                 int    `json:"stateDbId,omitempty"`
+	StreetAddress             string `json:"streetAddress,omitempty"`
+	StreetAddress2            string `json:"streetAddress2,omitempty"`
+	SubledgerGroupDBID        int    `json:"subledgerGroupDbId,omitempty"`
+	Swift                    string `json:"swift,omitempty"`
+	// Deprecated, argument will be removed in a future update.
+	TaxNumber string `json:"taxNumber,omitempty"`
+	ToDate	Date   `json:"toDate,omitzero"`
+	XGLDBID  int    `json:"xglDbId,omitempty"`
+	YourReference string `json:"yourReference,omitempty"`
+	ZipCode       string `json:"zipCode,omitempty"`
+	ZipCode2      string `json:"zipCode2,omitempty"`
+}
+
+func (c UpdateCustomerInput) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(c)
+}
+
+func (c UpdateCustomerInput) IsEmpty() bool {
+	return zero.IsZero(c)
+}
+
 type FlexiFieldInput struct {
 	Flag1     *bool    `json:"flag1,omitempty"`
 	Flag2     *bool    `json:"flag2,omitempty"`
@@ -556,7 +622,7 @@ func (UpdateCustomersInput) GetGraphQLType() string {
 }
 
 type UpdateCustomersInputNode struct {
-	Node CustomerInput `graphql:"node" json:"node"`
+	Node UpdateCustomerInput `graphql:"node" json:"node"`
 }
 
 func (UpdateCustomersInputNode) GetGraphQLType() string {
