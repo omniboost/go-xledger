@@ -1,6 +1,7 @@
 package xledger
 
 import (
+	"bufio"
 	"bytes"
 	"compress/gzip"
 	"context"
@@ -15,9 +16,12 @@ import (
 	"strings"
 	"text/template"
 	"time"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/hashicorp/go-multierror"
 	"github.com/hasura/go-graphql-client"
+	"github.com/omniboost/go-httperr"
 	"github.com/pkg/errors"
 	"golang.org/x/time/rate"
 )
@@ -288,6 +292,13 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 		return nil, err
 	}
 
+	// Handle '429 - Too many requests' response
+	if httpResp.StatusCode == http.StatusTooManyRequests {
+		// just taken from their documentation
+		time.Sleep(1 * time.Second)
+		return c.Do(req, body)
+	}
+
 	if c.onRequestCompleted != nil {
 		c.onRequestCompleted(req, httpResp)
 	}
@@ -304,12 +315,6 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 		log.Println(string(dump))
 	}
 
-	// check if the response isn't an error
-	err = CheckResponse(httpResp)
-	if err != nil {
-		return httpResp, err
-	}
-
 	// check the provided interface parameter
 	if httpResp == nil {
 		return httpResp, nil
@@ -323,6 +328,10 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 		return httpResp, nil
 	}
 
+	// read 512 bytes without draining the response body we may perhaps later
+	// use for error handling
+	peeked, _ := peek(httpResp, 512)
+
 	errResp := &ErrorResponse{Response: httpResp}
 	err = c.Unmarshal(httpResp.Body, body, errResp)
 	if err != nil {
@@ -331,6 +340,19 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 
 	if errResp.Error() != "" {
 		return httpResp, errResp
+	}
+
+	// no matches on th struct, but we got an error status code, try to return
+	// the response body as error message if its just plain text
+	if httpResp.StatusCode != 0 && (httpResp.StatusCode < 200 || httpResp.StatusCode > 299) {
+		// here the original response body could be just text
+		if isPlainText(peeked) {
+			return httpResp, errors.New(string(peeked))
+		}
+
+		// not text, but still an error status code, return the status as error
+		// message
+		return httpResp, &httperr.Error{StatusCode: httpResp.StatusCode, Err: errors.New(httpResp.Status)}
 	}
 
 	return httpResp, nil
@@ -470,4 +492,27 @@ func checkContentType(response *http.Response) error {
 	}
 
 	return nil
+}
+
+func isPlainText(b []byte) bool {
+	s := bytes.TrimSpace(b)
+	return utf8.Valid(s) && bytes.IndexFunc(s, func(r rune) bool {
+		return !unicode.IsLetter(r) &&
+			!unicode.IsDigit(r) &&
+			!unicode.IsSpace(r) &&
+			!strings.ContainsRune(`.,!?;:'"()-_/\@#%&*+=`, r)
+	}) == -1
+}
+
+func peek(resp *http.Response, n int) ([]byte, error) {
+	br := bufio.NewReaderSize(resp.Body, n)
+	peeked, err := br.Peek(n)
+	if err != nil && err != io.EOF && err != bufio.ErrBufferFull {
+		return nil, err
+	}
+
+	// Replace the response body with the buffered reader
+	resp.Body = io.NopCloser(br)
+
+	return peeked, nil
 }
